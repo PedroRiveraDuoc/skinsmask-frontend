@@ -1,0 +1,64 @@
+<!-- Barra de navegación principal -->
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary fixed-top">
+  <div class="container">
+      <!-- Logotipo de la empresa -->
+      <a class="navbar-brand me-2" href="/home">
+          <img src="assets/logo.png" height="100" alt="SkinsMask" loading="lazy" style="margin-top: -2px" />
+      </a>
+      <!-- Botón para colapsar la barra de navegación en pantallas pequeñas -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Elementos de la barra de navegación -->
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+          <ul class="navbar-nav nav-underline">
+              <!-- Enlaces de navegación -->
+              <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/home">Inicio</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/about">Sobre Nosotros</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/catalogue-page">Catálogo</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="/products">Productos</a>
+              </li>
+
+              <li class="nav-item">
+                  <a class="nav-link" href="/contact">Contacto</a>
+          </ul>
+      </div>
+      <!-- Elementos adicionales en la barra de navegación -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav nav-underline">
+              <!-- Enlace para iniciar sesión -->
+              <li class="nav-item" id="navLogin" style="padding-top: 8px;">
+                  <a class="nav-link" href="/login">Ingresar</a>
+              </li>
+              <!-- Botón para registrarse -->
+              <li class="nav-item" id="navRegister" style="padding-top: 8px;">
+                  <a class="btn btn-primary me-3" href="/register">Registrate</a>
+              </li>
+              <!-- Enlace al carrito de compras -->
+              <li class="nav-item">
+                  <a class="nav-link" href="/cart">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-shopping-cart-dollar" width="30" height="40"
+                          viewBox="0 0 24 24" stroke-width="1.5" stroke="#bc002d" fill="none" stroke-linecap="round"
+                          stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                          <path d="M4 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                          <path d="M13 17h-7v-14h-2" />
+                          <path d="M6 5l14 1l-.575 4.022m-4.925 2.978h-8.5" />
+                          <path d="M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+                          <path d="M19 21v1m0 -8v1" />
+                      </svg>
+                  </a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>

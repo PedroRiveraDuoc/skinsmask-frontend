@@ -1,0 +1,48 @@
+<div class="register-container">
+  <h3 class="mb-5 text-center"><strong>Regístrate</strong></h3>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="firstName" class="form-label">Nombre</label>
+      <input type="text" id="firstName" formControlName="firstName" class="form-control" required>
+      <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" class="text-danger">
+        El nombre no puede estar vacío.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Apellido</label>
+      <input type="text" id="lastName" formControlName="lastName" class="form-control" required>
+      <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" class="text-danger">
+        El apellido no puede estar vacío.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" id="email" formControlName="email" class="form-control" required>
+      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
+        <div *ngIf="registerForm.get('email')?.errors?.['required']">El correo electrónico no puede estar vacío.</div>
+        <div *ngIf="registerForm.get('email')?.errors?.['email']">El formato del correo electrónico no es válido.</div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Contraseña</label>
+      <input type="password" id="password" formControlName="password" class="form-control" required>
+      <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-danger">
+        <div *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña no puede estar vacía.</div>
+        <div *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control" required>
+      <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" class="text-danger">
+        La confirmación de la contraseña no puede estar vacía.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+  </form>
+</div>

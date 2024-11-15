@@ -1,0 +1,87 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+}
+
+.container {
+  margin-top: 3rem;
+  background-color: aliceblue;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  h2 {
+      margin-bottom: 1rem;
+  }
+
+  .table-striped {
+      width: 100%;
+  }
+
+  .table thead th {
+      text-align: center;
+  }
+
+  .table tbody td {
+      vertical-align: middle;
+      text-align: center;
+  }
+
+  .btn-primary,
+  .btn-danger,
+  .btn-success {
+      margin: 0 0.2rem;
+  }
+
+  form {
+      margin-top: 1rem;
+
+      .form-group {
+          margin-bottom: 1rem;
+
+          label {
+              display: block;
+              margin-bottom: 0.5rem;
+          }
+
+          input {
+              width: 100%;
+              padding: 0.5rem;
+          }
+      }
+
+      button {
+          margin-top: 1rem;
+      }
+  }
+
+  .mt-5 {
+      margin-top: 3rem;
+  }
+}
+
+
+/* Clase para hacer que las imágenes se vean pequeñas */
+.small-image {
+  width: 100px;
+  /* Ancho deseado */
+  height: auto;
+  /* Mantiene la proporción de la imagen */
+  object-fit: cover;
+  /* Asegura que la imagen cubra el área asignada sin distorsión */
+}
+
+.section-title {
+  background-color: #313131;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 2rem;
+
+}

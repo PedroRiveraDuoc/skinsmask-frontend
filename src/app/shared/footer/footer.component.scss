@@ -1,0 +1,35 @@
+/* Estilo global para el cuerpo de la página */
+body {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+
+  background-size: cover;
+  background-color: rgba(255, 0, 0, 0.5);  /* Color rojo con 50% de opacidad */
+  background-blend-mode: multiply;
+}
+
+/* Estilo principal para asegurar que el contenido principal ocupe el espacio completo */
+main {
+  flex: 1;
+}
+
+/* Otros estilos necesarios para tu proyecto */
+
+footer {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  margin-top: auto;
+}
+
+/* Contenedor principal */
+:host {
+display: flex;
+flex-direction: column;
+
+}
+
+router-outlet {
+flex: 1;
+}
+
