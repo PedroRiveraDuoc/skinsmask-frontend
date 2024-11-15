@@ -1,11 +1,10 @@
 :host {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 120vh;
-  margin-top: 30px;
-  min-height: 130vh;
-
+  align-items: flex-start; /* Cambiado para que el contenido crezca hacia abajo */
+  height: auto; /* Se adapta automáticamente al contenido */
+  padding-top: 5rem; /* Agrega espacio superior */
+  padding-bottom: 3rem; /* Espacio adicional al final */
 }
 
 .container {
