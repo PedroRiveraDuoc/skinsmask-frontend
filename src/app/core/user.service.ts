@@ -45,18 +45,27 @@ export class UserService {
   updateUserProfile(profile: { firstName: string; lastName: string; email: string }): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) {
+      console.error('Token no encontrado. Usuario no autorizado.');
       return throwError(() => new Error('No autorizado. Inicia sesión nuevamente.'));
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    console.log('Actualizando perfil con los datos:', profile); // Log para depuración
+
     return this.http.put(`${this.userApiUrl}/update`, profile, { headers }).pipe(
-      tap(() => {
+      tap((response) => {
+        console.log('Respuesta del servidor al actualizar perfil:', response);
         // Actualiza el estado del correo en AuthService
         this.authService.setUpdatedEmail(profile.email);
       }),
-      catchError(this.handleError)
+      catchError((error) => {
+        console.error('Error al actualizar el perfil:', error);
+        return this.handleError(error);
+      })
     );
   }
+
 
   /**
    * Maneja errores de HTTP.

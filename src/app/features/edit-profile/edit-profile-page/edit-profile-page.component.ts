@@ -10,10 +10,8 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './edit-profile-page.component.html',
-  styleUrl: './edit-profile-page.component.scss'
+  styleUrls: ['./edit-profile-page.component.scss']
 })
-
-
 export class EditProfilePageComponent implements OnInit {
   editProfileForm: FormGroup;
   errorMessage: string = '';
@@ -24,6 +22,7 @@ export class EditProfilePageComponent implements OnInit {
     private userService: UserService,
     private router: Router
   ) {
+    // Form initialization with validation rules
     this.editProfileForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.minLength(3)]],
@@ -40,26 +39,22 @@ export class EditProfilePageComponent implements OnInit {
    * Load the authenticated user's profile.
    */
   loadUserProfile(): void {
-    console.log('Intentando cargar el perfil del usuario...');
     const token = localStorage.getItem('token');
+
     if (!token) {
-      console.warn('Token no encontrado. Redirigiendo al login.');
       this.errorMessage = 'No estás autenticado. Inicia sesión nuevamente.';
+      console.warn('Token no encontrado en el almacenamiento local.');
       return;
     }
 
     this.userService.getAuthenticatedUser(token).subscribe({
       next: (user) => {
-        console.log('Datos del usuario cargados:', user);
+        console.log('Perfil cargado con éxito:', user); // Log para depuración
         this.editProfileForm.patchValue({
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
         });
-      },
-      error: (err) => {
-        console.error('Error al cargar el perfil del usuario:', err);
-        this.errorMessage = 'Error al cargar el perfil. Por favor, intenta nuevamente.';
       },
     });
   }
@@ -70,13 +65,16 @@ export class EditProfilePageComponent implements OnInit {
   onSubmit(): void {
     if (this.editProfileForm.invalid) {
       this.errorMessage = 'Por favor completa todos los campos correctamente.';
+      console.warn('Formulario inválido. Revisa los campos antes de enviar.');
       return;
     }
 
     const updatedProfile = this.editProfileForm.value;
+    console.log('Datos enviados para la actualización del perfil:', updatedProfile); // Log para depuración
 
     this.userService.updateUserProfile(updatedProfile).subscribe({
       next: () => {
+        console.log('Perfil actualizado exitosamente.'); // Log para depuración
         Swal.fire({
           title: '¡Perfil actualizado!',
           text: 'Tus cambios se han guardado exitosamente.',
@@ -87,6 +85,7 @@ export class EditProfilePageComponent implements OnInit {
         });
       },
       error: (err) => {
+        console.error('Error al actualizar el perfil:', err); // Log para depuración
         Swal.fire({
           title: 'Error',
           text: err.error || 'Hubo un problema al actualizar el perfil. Intenta nuevamente.',
