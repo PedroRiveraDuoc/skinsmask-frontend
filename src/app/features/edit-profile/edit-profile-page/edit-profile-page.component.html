@@ -1,0 +1,100 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-center align-items-center mb-5">
+            <img
+              src="assets/modificar-perfil.png"
+              class="img-fluid"
+              style="width: 700px; height: auto;"
+              alt="Modificación de perfil"
+            />
+          </div>
+          <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+            <!-- Nombre -->
+            <div class="form-group mb-3">
+              <label for="firstName">Nombre</label>
+              <input
+                type="text"
+                id="firstName"
+                formControlName="firstName"
+                class="form-control"
+                required
+              />
+              <div
+                *ngIf="editProfileForm.get('firstName')?.invalid && editProfileForm.get('firstName')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="editProfileForm.get('firstName')?.errors?.['required']">El nombre no puede estar vacío.</small>
+                <small *ngIf="editProfileForm.get('firstName')?.errors?.['minlength']">Debe tener al menos 3 caracteres.</small>
+              </div>
+            </div>
+
+            <!-- Apellido -->
+            <div class="form-group mb-3">
+              <label for="lastName">Apellido</label>
+              <input
+                type="text"
+                id="lastName"
+                formControlName="lastName"
+                class="form-control"
+                required
+              />
+              <div
+                *ngIf="editProfileForm.get('lastName')?.invalid && editProfileForm.get('lastName')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="editProfileForm.get('lastName')?.errors?.['required']">El apellido no puede estar vacío.</small>
+                <small *ngIf="editProfileForm.get('lastName')?.errors?.['minlength']">Debe tener al menos 3 caracteres.</small>
+              </div>
+            </div>
+
+            <!-- Correo Electrónico -->
+            <div class="form-group mb-3">
+              <label for="email">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+                required
+              />
+              <div
+                *ngIf="editProfileForm.get('email')?.invalid && editProfileForm.get('email')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="editProfileForm.get('email')?.errors?.['required']">El correo no puede estar vacío.</small>
+                <small *ngIf="editProfileForm.get('email')?.errors?.['email']">El formato del correo no es válido.</small>
+              </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="form-group mb-3">
+              <label for="password">Contraseña (Opcional)</label>
+              <input
+                type="password"
+                id="password"
+                formControlName="password"
+                class="form-control"
+              />
+              <div
+                *ngIf="editProfileForm.get('password')?.invalid && editProfileForm.get('password')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="editProfileForm.get('password')?.errors?.['minlength']">Debe tener al menos 8 caracteres.</small>
+              </div>
+            </div>
+
+            <!-- Botón de Enviar -->
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary" [disabled]="editProfileForm.invalid">Guardar Cambios</button>
+            </div>
+          </form>
+          <p *ngIf="errorMessage" class="text-danger mt-3">{{ errorMessage }}</p>
+          <p *ngIf="successMessage" class="text-success mt-3">{{ successMessage }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

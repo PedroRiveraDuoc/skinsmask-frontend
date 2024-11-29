@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 105vh;
+}
+
+.card-login {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background-color: #ff2847;
+  border-color: #ff2847;
+}
+
+.btn-primary:hover {
+  background-color: #ff5f72;
+  border-color: #ff5f72;
+}

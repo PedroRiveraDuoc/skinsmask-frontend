@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="text-center">
+      <h2 class="section-title mb-4">Listado de Productos 👺</h2>
+  </div>
+  <div *ngIf="products.length === 0" class="alert alert-info">
+      No hay productos disponibles.
+  </div>
+  <table class="table table-striped" *ngIf="products.length > 0">
+      <thead>
+          <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Marca</th>
+              <th>Rating</th>
+              <th>Disponible</th>
+              <th>Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let product of products">
+              <td><img [src]="product.imageUrl" alt="{{ product.name }}" class="img-thumbnail" style="width: 50px;"></td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.description }}</td>
+              <td>{{ product.price | currency }}</td>
+              <td>{{ product.stock }}</td>
+              <td>{{ product.brand }}</td>
+              <td>{{ product.rating }}</td>
+              <td>{{ product.available === 'Y' ? 'Sí' : 'No' }}</td>
+              <td>
+                  <button class="btn btn-warning btn-sm" (click)="modificar(product)">Modificar</button>
+                  <button class="btn btn-danger btn-sm" (click)="eliminar(product)">Eliminar</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>

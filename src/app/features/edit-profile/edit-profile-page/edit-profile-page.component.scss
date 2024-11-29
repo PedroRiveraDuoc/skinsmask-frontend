@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 110vh;
+}
+
+.container {
+  margin-top: 4rem;
+
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.btn-primary {
+  background-color: #ff2847;
+  border-color: #ff2847;
+}
+
+.btn-primary:hover {
+  background-color: #ff5f72;
+  border-color: #ff5f72;
+}
+
+
+.card {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+  text-align: center;
+}

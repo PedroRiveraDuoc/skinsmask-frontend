@@ -1,0 +1,277 @@
+@import "bootstrap/scss/bootstrap";
+
+/* Estilo global para el cuerpo de la página */
+body {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: url('./assets/fondo.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-color: rgba(255, 0, 0, 0.5);  /* Color rojo con 50% de opacidad */
+  background-blend-mode: multiply;
+}
+
+/* Asegurar que el body y html ocupen el 100% de la altura de la ventana */
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Configurar app-root para usar flexbox y ocupar toda la altura */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Asegurar que el router-outlet ocupe el espacio disponible */
+router-outlet {
+  flex: 1;
+  display: flex;
+}
+
+/* Estilo principal para asegurar que el contenido principal ocupe el espacio completo */
+main {
+  flex: 1;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Estilos adicionales para asegurar que el contenido sea legible */
+.main-content {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  flex: 1;
+}
+
+/* Estilo para la barra de navegación */
+.navbar {
+  background-color: #f8f9fa;  /* Color de fondo claro para un estilo minimalista */
+  box-shadow: 0 4px 10px rgba(198, 94, 94, 0.452);  /* Sombra bajo el navbar */
+}
+
+/* Estilo para los enlaces de navegación */
+.navbar-nav .nav-link {
+  color: #333;  /* Color oscuro para el texto */
+  margin: 0 10px;  /* Espaciado entre enlaces */
+  font-weight: 500;  /* Texto ligeramente en negrita */
+}
+
+/* Estilo para los enlaces de navegación al pasar el ratón */
+.navbar-nav .nav-link:hover {
+  color: #ff2847;  /* Cambia el color al pasar el ratón a shiraz 500 */
+}
+
+/* Estilo para el logotipo de la barra de navegación */
+.navbar-brand img {
+  height: 70px;
+}
+
+/* Estilo para los botones de enlace */
+.btn-link {
+  color: #ff2847;  /* shiraz 500 */
+}
+
+/* Estilo para los botones primarios */
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #ff2847;  /* shiraz 500 */
+  --bs-btn-border-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #ff5f72;  /* shiraz 400 */
+  --bs-btn-hover-border-color: #ff5f72;  /* shiraz 400 */
+  --bs-btn-focus-shadow-rgb: 255, 40, 71;  /* Color de enfoque aproximado */
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #fa0431;  /* shiraz 600 */
+  --bs-btn-active-border-color: #fa0431;  /* shiraz 600 */
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #ff2847;  /* shiraz 500 */
+  --bs-btn-disabled-border-color: #ff2847;  /* shiraz 500 */
+}
+
+/* Estilo para los botones de contorno primarios */
+.btn-outline-primary {
+  --bs-btn-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-border-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #ff2847;  /* shiraz 500 */
+  --bs-btn-hover-border-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-focus-shadow-rgb: 255, 40, 71;  /* Color de enfoque aproximado */
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #fa0431;  /* shiraz 600 */
+  --bs-btn-active-border-color: #fa0431;  /* shiraz 600 */
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #ff2847;  /* shiraz 500 */
+}
+
+/* Estilo para los botones de contorno informativos */
+.btn-outline-info {
+  --bs-btn-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-border-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #ff2847;  /* shiraz 500 */
+  --bs-btn-hover-border-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-focus-shadow-rgb: 255, 40, 71;  /* Color de enfoque aproximado */
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #fa0431;  /* shiraz 600 */
+  --bs-btn-active-border-color: #fa0431;  /* shiraz 600 */
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #ff2847;  /* shiraz 500 */
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #ff2847;  /* shiraz 500 */
+}
+
+/* Estilo para el pie de página */
+footer {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  margin-top: auto;
+}
+
+/* Estilos específicos para el pie de página */
+.footer {
+  background-color: #ffffff;
+  padding: 20px 0;
+}
+
+.footer h5 {
+  font-size: 16px;
+  color: #343a40;
+}
+
+.footer ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.footer ul li {
+  margin-bottom: 10px;
+}
+
+.footer ul li a {
+  color: #6c757d;
+  text-decoration: none;
+}
+
+.footer ul li a:hover {
+  color: #0056b3;
+}
+
+.footer .input-group {
+  max-width: 400px;
+}
+
+.footer .input-group .form-control {
+  border-radius: 0;
+}
+
+.footer .input-group .btn {
+  border-radius: 0;
+}
+
+.footer p {
+  margin-bottom: 0;
+  color: #7d6c6c;
+}
+
+.footer .list-unstyled {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.footer .list-unstyled li {
+  margin-left: 15px;
+}
+
+.footer .list-unstyled li a {
+  color: #343a40;
+  text-decoration: none;
+}
+
+.footer .list-unstyled li a:hover {
+  color: #0056b3;
+}
+
+/* Estilos específicos para el formulario de registro */
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+  font-size: 1rem;
+  line-height: 2.15;
+  padding-left: .75em;
+  padding-right: .75em;
+}
+
+.card-registration .select-arrow {
+  top: 13px;
+}
+
+/* Estilos para el formulario de login */
+.card-login {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Estilo para el enlace de "¿Olvidaste tu contraseña?" */
+.text-muted {
+  font-size: 0.9rem;
+}
+
+/* Estilo para los mensajes de error */
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Placeholder más transparente */
+::placeholder {
+  color: rgba(87, 87, 87, 0.228); /* Cambia el color y la opacidad del placeholder */
+}
+
+/* Placeholder desaparece al enfocar */
+input:focus::placeholder {
+  color: transparent; /* Hace que el placeholder sea transparente al enfocar el campo */
+}
+
+/* Estilos para botones blancos */
+.btn-white {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+.btn-white:hover {
+  background-color: #f8f9fa;
+  color: #000000;
+}
+
+/* Estilo para el carrusel */
+.custom-size-carousel {
+  height: 100vh;  /* Ajusta la altura del carrusel según tus necesidades */
+}
+
+.custom-size-carousel .carousel-inner {
+  height: 100%;  /* Asegura que la altura del contenido interno coincida */
+}
+
+.custom-size-carousel .carousel-item img {
+  height: 100%;  /* Asegura que las imágenes llenen la altura del carrusel */
+  object-fit: cover;  /* Asegura que las imágenes se ajusten sin deformarse */
+  transform: translateY(-20%);  /* Ajusta el valor para subir las imágenes */
+}

@@ -1,0 +1,42 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Cambiado para que el contenido crezca hacia abajo */
+  height: auto; /* Se adapta automáticamente al contenido */
+  padding-top: 5rem; /* Agrega espacio superior */
+  padding-bottom: 3rem; /* Espacio adicional al final */
+}
+
+.container {
+  margin-top: 5rem;
+}
+
+.card {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2, h4 {
+  text-align: center;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+hr {
+  margin: 2rem 0;
+}
+.section-title {
+  background-color: #313131;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+
+}

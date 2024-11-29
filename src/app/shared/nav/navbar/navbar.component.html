@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary fixed-top">
+  <div class="container">
+    <!-- Logotipo de la empresa -->
+    <a class="navbar-brand me-2" href="/home">
+      <img src="assets/logo.png" height="100" alt="SkinsMask" loading="lazy" style="margin-top: -2px" />
+    </a>
+
+    <!-- Botón para colapsar la barra de navegación en pantallas pequeñas -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Elementos de la barra de navegación -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav nav-underline">
+        <!-- Enlaces de navegación principales -->
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/home">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">Sobre Nosotros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/catalogue-page">Catálogo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/products">Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contacto</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Elementos adicionales en la barra de navegación -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav nav-underline">
+        <!-- Mostrar "Ingresar" y "Registrate" si el usuario no está autenticado -->
+        <ng-container *ngIf="!isAuthenticated">
+          <li class="nav-item" style="padding-top: 8px;">
+            <a class="nav-link" href="/login">Ingresar</a>
+          </li>
+          <li class="nav-item" style="padding-top: 8px;">
+            <a class="btn btn-primary me-3" href="/register">Registrate</a>
+          </li>
+        </ng-container>
+
+        <!-- Mostrar el correo del usuario y "Cerrar sesión" si está autenticado -->
+        <ng-container *ngIf="isAuthenticated">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              {{ email }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="#" (click)="logout()">Cerrar sesión</a></li>
+            </ul>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</nav>
