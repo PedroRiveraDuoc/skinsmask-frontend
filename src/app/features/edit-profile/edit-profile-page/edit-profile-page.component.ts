@@ -80,6 +80,7 @@ export class EditProfilePageComponent implements OnInit {
           text: 'Tus cambios se han guardado exitosamente.',
           icon: 'success',
           confirmButtonText: 'Ok',
+          confirmButtonColor: '#ff2847',
         }).then(() => {
           this.router.navigate(['/profile']);
         });
@@ -91,6 +92,7 @@ export class EditProfilePageComponent implements OnInit {
           text: err.error || 'Hubo un problema al actualizar el perfil. Intenta nuevamente.',
           icon: 'error',
           confirmButtonText: 'Cerrar',
+          confirmButtonColor: '#ff2847',
         });
         this.errorMessage = err.error || 'Error al actualizar el perfil.';
       },

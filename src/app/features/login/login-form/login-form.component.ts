@@ -42,6 +42,7 @@ export class LoginFormComponent {
           text: 'Bienvenido de nuevo.',
           icon: 'success',
           confirmButtonText: 'Continuar',
+          confirmButtonColor: '#ff2847',
         }).then(() => {
           this.router.navigate(['/home']);
         });
@@ -53,6 +54,7 @@ export class LoginFormComponent {
             text: 'Correo o contraseña incorrectos.',
             icon: 'error',
             confirmButtonText: 'Intentar de nuevo',
+            confirmButtonColor: '#ff2847',
           });
         } else {
           Swal.fire({
@@ -60,6 +62,7 @@ export class LoginFormComponent {
             text: 'Hubo un problema al iniciar sesión. Intenta nuevamente más tarde.',
             icon: 'error',
             confirmButtonText: 'Cerrar',
+            confirmButtonColor: '#ff2847',
           });
         }
       },
