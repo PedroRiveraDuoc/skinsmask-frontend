@@ -1,7 +1,40 @@
+# Dependencias
 node_modules
-coverage
+npm-debug.log*
+yarn-error.log*
+
+# Archivos de configuración locales
+.env
+*.env.*
+
+# Directorios de salida de compilación
 dist
-.git
-Dockerfile
-.dockerignore
-README.md
+coverage
+tmp
+out-tsc
+bazel-out
+
+# Archivos generados por el sistema
+.DS_Store
+Thumbs.db
+
+# Configuración de IDEs/editores
+.vscode
+.idea
+.history
+.project
+.classpath
+.settings/
+*.sublime-workspace
+
+# Caches
+.angular/cache
+.sass-cache/
+
+# Otros logs
+testem.log
+libpeerconnection.log
+connect.lock
+
+# Otros directorios innecesarios
+typings
