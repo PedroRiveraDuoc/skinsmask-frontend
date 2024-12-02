@@ -58,6 +58,7 @@
     "typescript": "5.3.3"
   },
   "dependencies": {
+    "js-vulnerabilities-rules": "file:",
     "mkdirp": "0.5.5",
     "tmp": "0.2.1",
     "varint": "6.0.0"
