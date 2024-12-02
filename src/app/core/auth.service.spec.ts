@@ -87,23 +87,39 @@ describe('AuthService', () => {
   });
 
   it('should clear localStorage and update observables when logout is called', () => {
-    // Set initial state
+    // Configurar el estado inicial en localStorage
     store['token'] = 'abc123';
     store['email'] = 'test@example.com';
-    service.login('test@example.com', 'password123').subscribe();
 
+    // Reinstanciar el servicio para que lea el estado actualizado de localStorage
+    service = new AuthService(httpMock as any);
+
+    // Verificar que el estado inicial es el esperado
+    let isAuthenticatedValue: boolean | undefined;
+    let usernameValue: string | null | undefined;
+
+    service.isAuthenticated$.subscribe((value) => {
+      isAuthenticatedValue = value;
+    });
+
+    service.username$.subscribe((value) => {
+      usernameValue = value;
+    });
+
+    // Asegurarse de que los BehaviorSubject se hayan inicializado
+    expect(isAuthenticatedValue).toBeTrue();
+    expect(usernameValue).toBe('test@example.com');
+
+    // Llamar al método logout
     service.logout();
 
+    // Verificar que localStorage esté limpio
     expect(localStorage.getItem('token')).toBeNull();
     expect(localStorage.getItem('email')).toBeNull();
 
-    service.isAuthenticated$.subscribe((isAuthenticated) => {
-      expect(isAuthenticated).toBeFalse();
-    });
-
-    service.username$.subscribe((username) => {
-      expect(username).toBeNull();
-    });
+    // Verificar los observables después de logout
+    expect(isAuthenticatedValue).toBeFalse();
+    expect(usernameValue).toBeNull();
   });
 
   it('should update and retrieve the updated email', () => {

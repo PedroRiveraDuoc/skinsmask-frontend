@@ -37,10 +37,13 @@ export class ForgotPasswordFormComponent {
     this.simulatePasswordRecovery(email);
   }
 
+  generateRandomValue(): number {
+    return crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1);
+  }
+
   simulatePasswordRecovery(email: string): void {
-    // Generar un número aleatorio seguro
-    const randomValue = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1);
-    const isSuccess = randomValue > 0.5; // Aleatorio seguro para simular respuesta
+    const randomValue = this.generateRandomValue();
+    const isSuccess = randomValue > 0.5;
 
     if (isSuccess) {
       Swal.fire({

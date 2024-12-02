@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, tap } from 'rxjs';
 
 export interface Product {
   id?: number;
@@ -43,6 +43,8 @@ export class ProductService {
   }
 
   deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
+      map(() => undefined)
+    );
   }
 }

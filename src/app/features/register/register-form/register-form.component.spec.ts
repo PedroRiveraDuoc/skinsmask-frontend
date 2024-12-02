@@ -76,10 +76,21 @@ describe('RegisterFormComponent', () => {
 
     it('should invalidate the form when passwords do not match', () => {
       component.registerForm.patchValue({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@example.com',
         password: '123456',
         confirmPassword: '654321',
       });
-      expect(component.registerForm.errors?.['passwordsDoNotMatch']).toBeTrue();
+      component.registerForm.updateValueAndValidity(); // Actualiza la validación
+
+      // Verificar si el error está en el control confirmPassword
+      const confirmPasswordErrors = component.registerForm.get('confirmPassword')?.errors;
+      expect(confirmPasswordErrors).toBeTruthy();
+      expect(confirmPasswordErrors?.['passwordsDoNotMatch']).toBeTrue();
+
+      // El formulario también debería ser inválido
+      expect(component.registerForm.valid).toBeFalse();
     });
 
     it('should validate the form when passwords match', () => {
