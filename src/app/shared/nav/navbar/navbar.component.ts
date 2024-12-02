@@ -37,4 +37,17 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.authService.logout();
   }
+
+  /**
+   * Maneja eventos de teclado para elementos interactivos.
+   */
+  handleKeyDown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault(); // Previene el comportamiento predeterminado
+      const dropdownToggle = document.getElementById('userDropdown');
+      if (dropdownToggle) {
+        dropdownToggle.click(); // Simula el clic en el elemento
+      }
+    }
+  }
 }

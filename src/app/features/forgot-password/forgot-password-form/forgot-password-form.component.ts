@@ -38,8 +38,10 @@ export class ForgotPasswordFormComponent {
   }
 
   simulatePasswordRecovery(email: string): void {
-    // Simulación de éxito o error
-    const isSuccess = Math.random() > 0.5; // Aleatorio para simular respuesta
+    // Generar un número aleatorio seguro
+    const randomValue = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1);
+    const isSuccess = randomValue > 0.5; // Aleatorio seguro para simular respuesta
+
     if (isSuccess) {
       Swal.fire({
         title: '¡Éxito!',
@@ -47,7 +49,6 @@ export class ForgotPasswordFormComponent {
         icon: 'success',
         confirmButtonText: 'Aceptar',
         confirmButtonColor: '#ff2847',
-
       });
     } else {
       Swal.fire({
