@@ -1,39 +1,149 @@
 <div class="container mt-5">
+  <!-- Encabezado -->
   <div class="text-center">
-      <h2 class="section-title mb-4">Listado de Productos 👺</h2>
+    <h2 class="section-title mb-4">Gestión de Productos 👺</h2>
   </div>
-  <div *ngIf="products.length === 0" class="alert alert-info">
-      No hay productos disponibles.
+
+  <!-- Formulario para Agregar/Editar Productos -->
+  <div class="card mb-4">
+    <div class="card-header">
+      {{ isEditing ? 'Editar Producto' : 'Agregar Nuevo Producto' }}
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" #productForm="ngForm" *ngIf="currentProduct">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="name">Nombre</label>
+              <input
+                type="text"
+                id="name"
+                class="form-control"
+                [(ngModel)]="currentProduct.name"
+                name="name"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="description">Descripción</label>
+              <input
+                type="text"
+                id="description"
+                class="form-control"
+                [(ngModel)]="currentProduct.description"
+                name="description"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="price">Precio</label>
+              <input
+                type="number"
+                id="price"
+                class="form-control"
+                [(ngModel)]="currentProduct.price"
+                name="price"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="stock">Stock</label>
+              <input
+                type="number"
+                id="stock"
+                class="form-control"
+                [(ngModel)]="currentProduct.stock"
+                name="stock"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="categoryId">Categoría</label>
+              <input
+                type="number"
+                id="categoryId"
+                class="form-control"
+                [(ngModel)]="currentProduct.categoryId"
+                name="categoryId"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="imageUrls">URLs de Imágenes (separadas por comas)</label>
+              <input
+                type="text"
+                id="imageUrls"
+                class="form-control"
+                [(ngModel)]="imageUrlsInput"
+                name="imageUrls"
+                placeholder="Ingresa las URLs separadas por comas"
+              />
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          {{ isEditing ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()" *ngIf="isEditing">
+          Cancelar
+        </button>
+      </form>
+    </div>
   </div>
-  <table class="table table-striped" *ngIf="products.length > 0">
-      <thead>
-          <tr>
-              <th>Imagen</th>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th>Precio</th>
-              <th>Stock</th>
-              <th>Marca</th>
-              <th>Rating</th>
-              <th>Disponible</th>
-              <th>Acciones</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let product of products">
-              <td><img [src]="product.imageUrl" alt="{{ product.name }}" class="img-thumbnail" style="width: 50px;"></td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.description }}</td>
-              <td>{{ product.price | currency }}</td>
-              <td>{{ product.stock }}</td>
-              <td>{{ product.brand }}</td>
-              <td>{{ product.rating }}</td>
-              <td>{{ product.available === 'Y' ? 'Sí' : 'No' }}</td>
-              <td>
-                  <button class="btn btn-warning btn-sm" (click)="modificar(product)">Modificar</button>
-                  <button class="btn btn-danger btn-sm" (click)="eliminar(product)">Eliminar</button>
-              </td>
-          </tr>
-      </tbody>
+
+  <!-- Tabla de productos -->
+  <div class="alert alert-info" *ngIf="!products || products.length === 0">
+    No hay productos disponibles.
+  </div>
+
+  <table class="table table-striped" *ngIf="products && products.length > 0">
+    <thead>
+      <tr>
+        <th>Imágenes</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>
+          <div *ngIf="product.imageUrls?.length && product.imageUrls.length > 0; else noImage">
+            <img
+              *ngFor="let url of product.imageUrls"
+              [src]="url"
+              alt="{{ product.name }}"
+              class="img-thumbnail"
+              style="width: 50px; margin-right: 5px;"
+            />
+          </div>
+          <ng-template #noImage>
+            <span class="text-muted">Sin imagen</span>
+          </ng-template>
+        </td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.price | currency:'CLP':'symbol' }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.categoryId }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" (click)="editProduct(product)">Modificar</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id!)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>

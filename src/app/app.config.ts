@@ -10,7 +10,6 @@ import { HomePageComponent } from './features/home/home-page/home-page.component
 import { ContactComponent } from './features/contact/contact-form/contact-form.component';
 import { ForgotPasswordFormComponent } from './features/forgot-password/forgot-password-form/forgot-password-form.component';
 import { RegisterFormComponent } from './features/register/register-form/register-form.component';
-import { CataloguePageComponent } from './features/catalogue/catalogue-page/catalogue-page.component';
 import { EditProfilePageComponent } from './features/edit-profile/edit-profile-page/edit-profile-page.component';
 
 // Define tus rutas de la aplicación
@@ -22,7 +21,6 @@ export const APP_ROUTES: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'forgot-password-form', component: ForgotPasswordFormComponent },
   { path: 'register', component: RegisterFormComponent },
-  { path: 'catalogue-page', component: CataloguePageComponent },
   { path: 'edit-profile', component: EditProfilePageComponent },
   { path: '**', redirectTo: '' },
 ];
