@@ -7,27 +7,30 @@ export function matchPasswordsValidator(): ValidatorFn {
     const confirmPasswordControl = formGroup.get('confirmPassword');
 
     if (!passwordControl || !confirmPasswordControl) {
-      return null;
+      return null; // No hacemos nada si faltan controles
     }
 
     const password = passwordControl.value;
     const confirmPassword = confirmPasswordControl.value;
 
+    // Clonar los errores actuales para evitar mutaciones
+    const confirmPasswordErrors = confirmPasswordControl.errors ? { ...confirmPasswordControl.errors } : {};
+
+    // Remover 'passwordsDoNotMatch' si existe
+    delete confirmPasswordErrors['passwordsDoNotMatch'];
+
     if (password !== confirmPassword) {
-      confirmPasswordControl.setErrors({ passwordsDoNotMatch: true });
-    } else {
-      // Eliminar el error si las contraseñas coinciden
-      const errors = confirmPasswordControl.errors;
-      if (errors) {
-        delete errors['passwordsDoNotMatch'];
-        if (Object.keys(errors).length === 0) {
-          confirmPasswordControl.setErrors(null);
-        } else {
-          confirmPasswordControl.setErrors(errors);
-        }
-      }
+      // Agregar 'passwordsDoNotMatch' si las contraseñas no coinciden
+      confirmPasswordErrors['passwordsDoNotMatch'] = true;
     }
 
-    return null; // No establecer errores en el formulario
+    // Actualizar los errores del control
+    if (Object.keys(confirmPasswordErrors).length > 0) {
+      confirmPasswordControl.setErrors(confirmPasswordErrors);
+    } else {
+      confirmPasswordControl.setErrors(null);
+    }
+
+    return null; // No establecemos errores a nivel de formulario
   };
 }
