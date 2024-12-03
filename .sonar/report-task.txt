@@ -3,5 +3,5 @@ projectKey=PedroRiveraDuoc_skinsmask-frontend
 serverUrl=https://sonarcloud.io
 serverVersion=8.0.0.58332
 dashboardUrl=https://sonarcloud.io/dashboard?id=PedroRiveraDuoc_skinsmask-frontend
-ceTaskId=AZOI9SKKFA2SZ1Kkm8n7
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZOI9SKKFA2SZ1Kkm8n7
+ceTaskId=AZOI-GorVpzu8ZlzAhCU
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZOI-GorVpzu8ZlzAhCU

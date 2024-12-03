@@ -27,6 +27,11 @@ describe('ForgotPasswordFormComponent', () => {
   });
 
   describe('Form Initialization', () => {
+    it('should initialize the form with empty values', () => {
+      const emailControl = component.forgotPasswordForm.get('email');
+      expect(emailControl?.value).toBe('');
+    });
+
     it('should initialize the form with email control', () => {
       expect(component.forgotPasswordForm).toBeDefined();
       expect(component.forgotPasswordForm.get('email')).toBeDefined();
@@ -112,4 +117,13 @@ describe('ForgotPasswordFormComponent', () => {
       });
     });
   });
+
+  describe('generateRandomValue', () => {
+    it('should generate a random value between 0 and 1', () => {
+      const randomValue = component.generateRandomValue();
+      expect(randomValue).toBeGreaterThanOrEqual(0);
+      expect(randomValue).toBeLessThan(1);
+    });
+  });
 });
+
