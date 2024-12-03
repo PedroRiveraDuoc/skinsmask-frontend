@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './about-page.component.scss'
 })
 export class AboutPageComponent {
-
+  ngOnInit(): void {
+    console.log('AboutPageComponent cargado');
+  }
 }

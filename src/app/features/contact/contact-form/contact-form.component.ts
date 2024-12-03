@@ -20,7 +20,9 @@ export class ContactComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log('ContactComponent se ha cargado');
+  }
 
   onSubmit(): void {
     if (this.contactForm.valid) {

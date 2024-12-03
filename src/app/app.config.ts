@@ -1,5 +1,5 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter, Routes } from '@angular/router';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { provideRouter, Routes, withDebugTracing } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 
 // Importa tus componentes existentes
@@ -11,6 +11,7 @@ import { ContactComponent } from './features/contact/contact-form/contact-form.c
 import { ForgotPasswordFormComponent } from './features/forgot-password/forgot-password-form/forgot-password-form.component';
 import { RegisterFormComponent } from './features/register/register-form/register-form.component';
 import { EditProfilePageComponent } from './features/edit-profile/edit-profile-page/edit-profile-page.component';
+import { CommonModule } from '@angular/common';
 
 // Define tus rutas de la aplicación
 export const APP_ROUTES: Routes = [
@@ -29,6 +30,7 @@ export const APP_ROUTES: Routes = [
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(APP_ROUTES),
-    provideHttpClient(),      // Agrega el cliente HTTP globalmente
+    provideHttpClient(),
   ],
 };
+
