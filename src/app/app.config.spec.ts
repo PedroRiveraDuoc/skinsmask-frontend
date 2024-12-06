@@ -14,6 +14,7 @@ describe('AppConfig', () => {
       { path: 'forgot-password-form', component: jasmine.any(Function) },
       { path: 'register', component: jasmine.any(Function) },
       { path: 'edit-profile', component: jasmine.any(Function) },
+      { path: 'catalogue', component: jasmine.any(Function) },
       { path: '**', redirectTo: '' },
     ];
 

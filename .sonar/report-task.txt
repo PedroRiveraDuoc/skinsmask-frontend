@@ -1,7 +1,0 @@
-organization=pedroriveraduoc
-projectKey=PedroRiveraDuoc_skinsmask-frontend
-serverUrl=https://sonarcloud.io
-serverVersion=8.0.0.58332
-dashboardUrl=https://sonarcloud.io/dashboard?id=PedroRiveraDuoc_skinsmask-frontend
-ceTaskId=AZOKqbwzVpzu8ZlzAn1O
-ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZOKqbwzVpzu8ZlzAn1O

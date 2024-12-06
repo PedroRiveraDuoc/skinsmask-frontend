@@ -11,7 +11,6 @@ import { ContactComponent } from './features/contact/contact-form/contact-form.c
 import { ForgotPasswordFormComponent } from './features/forgot-password/forgot-password-form/forgot-password-form.component';
 import { RegisterFormComponent } from './features/register/register-form/register-form.component';
 import { EditProfilePageComponent } from './features/edit-profile/edit-profile-page/edit-profile-page.component';
-import { CommonModule } from '@angular/common';
 import { CatalogueComponent } from './features/catalogue/catalogue.component';
 
 // Define tus rutas de la aplicación

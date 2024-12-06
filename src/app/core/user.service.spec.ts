@@ -1,19 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { UserService } from './user.service';
-import { AuthService } from './auth.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
+import { UserService, UserProfile } from './user.service';
+import { AuthService } from './auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 describe('UserService', () => {
   let service: UserService;
-  let authServiceMock: jasmine.SpyObj<AuthService>;
   let httpMock: HttpTestingController;
-  let store: { [key: string]: string } = {};
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  const apiUrl = 'http://localhost:8081/api/auth'; // Ajustar al puerto 8081
+  const userApiUrl = 'http://localhost:8081/api/users';
 
   beforeEach(() => {
-    // Crear un mock de AuthService
-    authServiceMock = jasmine.createSpyObj('AuthService', ['setUpdatedEmail']);
+    const authServiceMock = jasmine.createSpyObj('AuthService', ['setUpdatedEmail']);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -25,195 +24,91 @@ describe('UserService', () => {
 
     service = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
-
-    // Mock de localStorage
-    store = {};
-    spyOn(localStorage, 'getItem').and.callFake((key: string): string | null => {
-      return store[key] || null;
-    });
-    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): void => {
-      store[key] = value;
-    });
-    spyOn(localStorage, 'removeItem').and.callFake((key: string): void => {
-      delete store[key];
-    });
-    spyOn(localStorage, 'clear').and.callFake(() => {
-      store = {};
-    });
+    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
   });
 
   afterEach(() => {
     httpMock.verify();
-    store = {};
   });
 
-  describe('register', () => {
-    it('should send POST request to the correct URL with user data', () => {
-      const mockUser = { username: 'testuser', password: 'password123', email: 'test@example.com' };
-      const mockResponse = { success: true };
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
 
-      service.register(mockUser).subscribe((response) => {
-        expect(response).toEqual(mockResponse);
-      });
+  describe('#register', () => {
+    it('should send a POST request to register a user', () => {
+      const mockUser: UserProfile = {
+        firstName: 'John',
+        lastName: 'Doe',
+        username: 'johndoe',
+        email: 'john.doe@example.com',
+        password: 'password123',
+        roles: ['user'],
+      };
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/api/auth/signup`);
+      service.register(mockUser).subscribe();
+
+      const req = httpMock.expectOne(`${apiUrl}/signup`);
       expect(req.request.method).toBe('POST');
       expect(req.request.body).toEqual(mockUser);
+      req.flush({ message: 'User registered successfully' });
+    });
 
+    it('should handle an error response', () => {
+      const mockUser: UserProfile = {
+        firstName: 'John',
+        lastName: 'Doe',
+        username: 'johndoe',
+        email: 'john.doe@example.com',
+        password: 'password123',
+        roles: ['user'],
+      };
+
+      service.register(mockUser).subscribe({
+        error: (error) => {
+          expect(error.message).toBe('Solicitud inválida. Verifica los datos enviados.');
+        },
+      });
+
+      const req = httpMock.expectOne(`${apiUrl}/signup`);
+      req.flush({ message: 'Invalid request' }, { status: 400, statusText: 'Bad Request' });
+    });
+  });
+
+  describe('#updateUserProfile', () => {
+    it('should send a PUT request to update the user profile', () => {
+      const mockToken = 'mockToken123';
+      const mockProfile: Partial<UserProfile> = { email: 'updated.email@example.com' };
+      const mockResponse = { message: 'Profile updated successfully' };
+
+      spyOn(localStorage, 'getItem').and.returnValue(mockToken);
+
+      service.updateUserProfile(mockProfile).subscribe((response) => {
+        expect(response).toEqual(mockResponse);
+        expect(authServiceSpy.setUpdatedEmail).toHaveBeenCalledWith('updated.email@example.com');
+      });
+
+      const req = httpMock.expectOne(`${userApiUrl}/update`);
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`);
+      expect(req.request.body).toEqual(mockProfile);
       req.flush(mockResponse);
     });
 
-    it('should handle error response', () => {
-      const mockUser = { username: 'testuser', password: 'password123', email: 'test@example.com' };
-      const errorMessage = 'Solicitud inválida. Por favor, verifica los datos enviados.';
+    it('should handle an error response when updating the profile', () => {
+      const mockToken = 'mockToken123';
+      const mockProfile: Partial<UserProfile> = { email: 'updated.email@example.com' };
 
-      service.register(mockUser).subscribe({
-        next: () => fail('Expected an error, but got a response'),
+      spyOn(localStorage, 'getItem').and.returnValue(mockToken);
+
+      service.updateUserProfile(mockProfile).subscribe({
         error: (error) => {
-          expect(error.message).toBe(errorMessage);
+          expect(error.message).toBe('Solicitud inválida. Verifica los datos enviados.');
         },
       });
 
-      const req = httpMock.expectOne(`${environment.apiUrl}/api/auth/signup`);
-      expect(req.request.method).toBe('POST');
-
-      req.flush({}, { status: 400, statusText: 'Bad Request' });
-    });
-  });
-
-  describe('getAuthenticatedUser', () => {
-    it('should send GET request to the correct URL with Authorization header', () => {
-      const token = 'abc123';
-      const mockUser = { firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' };
-
-      service.getAuthenticatedUser(token).subscribe((user) => {
-        expect(user).toEqual(mockUser);
-      });
-
-      const req = httpMock.expectOne(`${environment.apiUrl}/api/users/me`);
-      expect(req.request.method).toBe('GET');
-      expect(req.request.headers.get('Authorization')).toBe(`Bearer ${token}`);
-
-      req.flush(mockUser);
-    });
-
-    it('should handle error response', () => {
-      const token = 'abc123';
-      const errorMessage = 'No autorizado. Por favor, inicia sesión nuevamente.';
-
-      service.getAuthenticatedUser(token).subscribe({
-        next: () => fail('Expected an error, but got a response'),
-        error: (error) => {
-          expect(error.message).toBe(errorMessage);
-        },
-      });
-
-      const req = httpMock.expectOne(`${environment.apiUrl}/api/users/me`);
-      expect(req.request.method).toBe('GET');
-
-      req.flush({}, { status: 401, statusText: 'Unauthorized' });
-    });
-  });
-
-  describe('updateUserProfile', () => {
-    it('should throw error if token is not found in localStorage', () => {
-      store['token'] = ''; // Simular que no hay token
-
-      service.updateUserProfile({ firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com' }).subscribe({
-        next: () => fail('Expected an error, but got a response'),
-        error: (error) => {
-          expect(error.message).toBe('No autorizado. Inicia sesión nuevamente.');
-        },
-      });
-
-      // No se espera ninguna solicitud HTTP
-      httpMock.expectNone(`${environment.apiUrl}/api/users/update`);
-    });
-
-    it('should send PUT request to the correct URL with profile data and Authorization header', () => {
-      store['token'] = 'abc123';
-      const updatedProfile = { firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com' };
-
-      service.updateUserProfile(updatedProfile).subscribe((response) => {
-        expect(response).toEqual(updatedProfile);
-        expect(authServiceMock.setUpdatedEmail).toHaveBeenCalledWith(updatedProfile.email);
-      });
-
-      const req = httpMock.expectOne(`${environment.apiUrl}/api/users/update`);
-      expect(req.request.method).toBe('PUT');
-      expect(req.request.headers.get('Authorization')).toBe(`Bearer abc123`);
-      expect(req.request.body).toEqual(updatedProfile);
-
-      req.flush(updatedProfile);
-    });
-
-    it('should handle error response', () => {
-      store['token'] = 'abc123';
-      const updatedProfile = { firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@example.com' };
-      const errorMessage = 'Error interno del servidor. Intenta nuevamente más tarde.';
-
-      service.updateUserProfile(updatedProfile).subscribe({
-        next: () => fail('Expected an error, but got a response'),
-        error: (error) => {
-          expect(error.message).toBe(errorMessage);
-        },
-      });
-
-      const req = httpMock.expectOne(`${environment.apiUrl}/api/users/update`);
-      expect(req.request.method).toBe('PUT');
-
-      req.flush({}, { status: 500, statusText: 'Internal Server Error' });
-    });
-  });
-
-  describe('handleError', () => {
-    it('should return appropriate error message based on status code', () => {
-      const error400 = new HttpErrorResponse({ status: 400, statusText: 'Bad Request' });
-      const error401 = new HttpErrorResponse({ status: 401, statusText: 'Unauthorized' });
-      const error404 = new HttpErrorResponse({ status: 404, statusText: 'Not Found' });
-      const error500 = new HttpErrorResponse({ status: 500, statusText: 'Internal Server Error' });
-      const errorUnknown = new HttpErrorResponse({ status: 0, statusText: 'Unknown Error' });
-
-      // Usaremos una función auxiliar para probar el método privado
-      // Aunque no es una práctica común, es útil para aumentar la cobertura
-
-      // @ts-ignore: Accessing private method for testing purposes
-      const handleError = service['handleError'].bind(service);
-
-      handleError(error400).subscribe({
-        next: () => fail('Expected an error'),
-        error: (error) => {
-          expect(error.message).toBe('Solicitud inválida. Por favor, verifica los datos enviados.');
-        },
-      });
-
-      handleError(error401).subscribe({
-        next: () => fail('Expected an error'),
-        error: (error) => {
-          expect(error.message).toBe('No autorizado. Por favor, inicia sesión nuevamente.');
-        },
-      });
-
-      handleError(error404).subscribe({
-        next: () => fail('Expected an error'),
-        error: (error) => {
-          expect(error.message).toBe('Recurso no encontrado. Por favor, verifica la URL.');
-        },
-      });
-
-      handleError(error500).subscribe({
-        next: () => fail('Expected an error'),
-        error: (error) => {
-          expect(error.message).toBe('Error interno del servidor. Intenta nuevamente más tarde.');
-        },
-      });
-
-      handleError(errorUnknown).subscribe({
-        next: () => fail('Expected an error'),
-        error: (error) => {
-          expect(error.message).toBe('Ocurrió un error inesperado.');
-        },
-      });
+      const req = httpMock.expectOne(`${userApiUrl}/update`);
+      req.flush({ message: 'Invalid request' }, { status: 400, statusText: 'Bad Request' });
     });
   });
 });

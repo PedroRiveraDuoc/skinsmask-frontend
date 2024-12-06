@@ -22,15 +22,12 @@ export function matchPasswordsValidator(): ValidatorFn {
     if (password !== confirmPassword) {
       // Agregar 'passwordsDoNotMatch' si las contraseñas no coinciden
       confirmPasswordErrors['passwordsDoNotMatch'] = true;
-    }
-
-    // Actualizar los errores del control
-    if (Object.keys(confirmPasswordErrors).length > 0) {
       confirmPasswordControl.setErrors(confirmPasswordErrors);
+      return { passwordMismatch: true }; // Retorna error a nivel de formulario
     } else {
-      confirmPasswordControl.setErrors(null);
+      confirmPasswordControl.setErrors(Object.keys(confirmPasswordErrors).length > 0 ? confirmPasswordErrors : null);
     }
 
-    return null; // No establecemos errores a nivel de formulario
+    return null; // No errores a nivel de formulario si coinciden
   };
 }

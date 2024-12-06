@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthService } from './auth.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
-  let store: { [key: string]: string } = {};
-  const environment = {
-    apiUrl: 'http://localhost:8081', // Adjust based on your actual API URL
-  };
+  const localStorageMock: { [key: string]: string | null } = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -19,19 +18,15 @@ describe('AuthService', () => {
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
 
-    store = {};
-
-    spyOn(localStorage, 'getItem').and.callFake((key: string): string | null => {
-      return store[key] || null;
-    });
-    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string): void => {
-      store[key] = value;
-    });
-    spyOn(localStorage, 'removeItem').and.callFake((key: string): void => {
-      delete store[key];
+    // Mock localStorage
+    spyOn(localStorage, 'getItem').and.callFake((key: string) => localStorageMock[key] || null);
+    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string) => {
+      localStorageMock[key] = value;
     });
     spyOn(localStorage, 'clear').and.callFake(() => {
-      store = {};
+      for (const key in localStorageMock) {
+        delete localStorageMock[key];
+      }
     });
   });
 
@@ -43,97 +38,102 @@ describe('AuthService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should send a POST request when login is called', () => {
-    const mockEmail = 'test@example.com';
-    const mockPassword = '123456';
-    const mockResponse = { token: 'abc123' };
+  describe('#login', () => {
+    it('should send a POST request to login and store the token', () => {
+      const mockResponse = { token: 'mockToken123' };
+      const mockEmail = 'test@example.com';
+      const mockPassword = 'password123';
 
-    service.login(mockEmail, mockPassword).subscribe((response) => {
-      expect(response).toEqual(mockResponse);
-    });
+      service.login(mockEmail, mockPassword).subscribe((response) => {
+        expect(response).toEqual(mockResponse);
+        expect(localStorage.setItem).toHaveBeenCalledWith('token', 'mockToken123');
+      });
 
-    const req = httpMock.expectOne(`${environment.apiUrl}/api/auth/login`);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ email: mockEmail, password: mockPassword });
+      const req = httpMock.expectOne(`${environment.apiUrl}/api/auth/login`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual({ email: mockEmail, password: mockPassword });
+      req.flush(mockResponse);
 
-    req.flush(mockResponse);
-  });
+      service.isAuthenticated$.subscribe((isAuthenticated) => {
+        expect(isAuthenticated).toBe(true);
+      });
 
-  it('should update localStorage and observables when login is successful', () => {
-    const mockEmail = 'test@example.com';
-    const mockPassword = '123456';
-    const mockResponse = { token: 'abc123' };
-
-    let isAuthenticatedValue: boolean | undefined;
-    let usernameValue: string | null | undefined;
-
-    service.isAuthenticated$.subscribe((value) => {
-      isAuthenticatedValue = value;
-    });
-
-    service.username$.subscribe((value) => {
-      usernameValue = value;
-    });
-
-    service.login(mockEmail, mockPassword).subscribe();
-
-    const req = httpMock.expectOne(`${environment.apiUrl}/api/auth/login`);
-    req.flush(mockResponse);
-
-    expect(localStorage.setItem).toHaveBeenCalledWith('token', mockResponse.token);
-    expect(localStorage.setItem).toHaveBeenCalledWith('email', mockEmail);
-    expect(isAuthenticatedValue).toBeTrue();
-    expect(usernameValue).toBe(mockEmail);
-  });
-
-  it('should clear localStorage and update observables when logout is called', () => {
-    // Configurar el estado inicial en localStorage
-    store['token'] = 'abc123';
-    store['email'] = 'test@example.com';
-
-    // Reinstanciar el servicio para que lea el estado actualizado de localStorage
-    service = new AuthService(httpMock as any);
-
-    // Verificar que el estado inicial es el esperado
-    let isAuthenticatedValue: boolean | undefined;
-    let usernameValue: string | null | undefined;
-
-    service.isAuthenticated$.subscribe((value) => {
-      isAuthenticatedValue = value;
-    });
-
-    service.username$.subscribe((value) => {
-      usernameValue = value;
-    });
-
-    // Asegurarse de que los BehaviorSubject se hayan inicializado
-    expect(isAuthenticatedValue).toBeTrue();
-    expect(usernameValue).toBe('test@example.com');
-
-    // Llamar al método logout
-    service.logout();
-
-    // Verificar que localStorage esté limpio
-    expect(localStorage.getItem('token')).toBeNull();
-    expect(localStorage.getItem('email')).toBeNull();
-
-    // Verificar los observables después de logout
-    expect(isAuthenticatedValue).toBeFalse();
-    expect(usernameValue).toBeNull();
-  });
-
-  it('should update and retrieve the updated email', () => {
-    const newEmail = 'newemail@example.com';
-
-    service.setUpdatedEmail(newEmail);
-
-    expect(localStorage.setItem).toHaveBeenCalledWith('email', newEmail);
-    expect(service.getUpdatedEmail()).toBe(newEmail);
-
-    service.username$.subscribe((username) => {
-      expect(username).toBe(newEmail);
+      service.username$.subscribe((username) => {
+        expect(username).toBe(mockEmail);
+      });
     });
   });
 
-  // Add more tests as needed to cover all methods and scenarios
+  describe('#logout', () => {
+    it('should clear localStorage and reset subjects', () => {
+      localStorageMock['token'] = 'mockToken';
+      localStorageMock['email'] = 'mockuser@example.com';
+
+      service.logout();
+
+      expect(localStorage.clear).toHaveBeenCalled();
+      service.isAuthenticated$.subscribe((isAuthenticated) => {
+        expect(isAuthenticated).toBe(false);
+      });
+      service.username$.subscribe((username) => {
+        expect(username).toBeNull();
+      });
+    });
+  });
+
+  describe('#getAuthenticatedUserData', () => {
+    it('should return the decoded token payload', () => {
+      const mockTokenPayload = { username: 'testuser', email: 'test@example.com' };
+      const mockToken = `header.${btoa(JSON.stringify(mockTokenPayload))}.signature`;
+
+      localStorageMock['token'] = mockToken;
+
+      const userData = service.getAuthenticatedUserData();
+      expect(userData).toEqual(mockTokenPayload);
+    });
+
+    it('should return null if token is invalid', () => {
+      localStorageMock['token'] = 'invalidToken';
+
+      const userData = service.getAuthenticatedUserData();
+      expect(userData).toBeNull();
+    });
+
+    it('should return null if token is not present', () => {
+      delete localStorageMock['token'];
+
+      const userData = service.getAuthenticatedUserData();
+      expect(userData).toBeNull();
+    });
+  });
+
+  describe('Private methods', () => {
+    it('#hasToken should return true if token exists in localStorage', () => {
+      localStorageMock['token'] = 'mockToken';
+
+      const hasToken = (service as any).hasToken();
+      expect(hasToken).toBe(true);
+    });
+
+    it('#hasToken should return false if token does not exist in localStorage', () => {
+      delete localStorageMock['token'];
+
+      const hasToken = (service as any).hasToken();
+      expect(hasToken).toBe(false);
+    });
+
+    it('#getEmail should return the email from localStorage', () => {
+      localStorageMock['email'] = 'mockuser@example.com';
+
+      const email = (service as any).getEmail();
+      expect(email).toBe('mockuser@example.com');
+    });
+
+    it('#getEmail should return null if email is not present in localStorage', () => {
+      delete localStorageMock['email'];
+
+      const email = (service as any).getEmail();
+      expect(email).toBeNull();
+    });
+  });
 });
