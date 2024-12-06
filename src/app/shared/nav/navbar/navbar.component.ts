@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/auth.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav',
@@ -11,42 +13,37 @@ import { AuthService } from '../../../core/auth.service';
 })
 export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
+  userRoles: string[] = [];
   email: string | null = null;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    // Suscribirse a cambios en el estado de autenticación
     this.authService.isAuthenticated$.subscribe((isAuth) => {
       this.isAuthenticated = isAuth;
+      if (isAuth) {
+        const userData = this.authService.getAuthenticatedUserData();
+        if (userData) {
+          this.userRoles = userData.roles || [];
+          this.email = userData.username || null;
+        }
+      } else {
+        this.userRoles = [];
+        this.email = null;
+      }
     });
-
-    // Suscribirse al correo actualizado
-    this.authService.username$.subscribe((email) => {
-      this.email = email;
-    });
-  }
-
-  /**
-   * Actualiza el correo en caso de cambio.
-   */
-  updateEmail(email: string): void {
-    this.authService.setUpdatedEmail(email); // Utiliza el método del servicio para actualizar el correo
   }
 
   logout(): void {
     this.authService.logout();
   }
 
-  /**
-   * Maneja eventos de teclado para elementos interactivos.
-   */
   handleKeyDown(event: KeyboardEvent): void {
     if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault(); // Previene el comportamiento predeterminado
+      event.preventDefault();
       const dropdownToggle = document.getElementById('userDropdown');
       if (dropdownToggle) {
-        dropdownToggle.click(); // Simula el clic en el elemento
+        dropdownToggle.click();
       }
     }
   }

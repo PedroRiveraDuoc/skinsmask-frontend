@@ -12,6 +12,7 @@ import { ForgotPasswordFormComponent } from './features/forgot-password/forgot-p
 import { RegisterFormComponent } from './features/register/register-form/register-form.component';
 import { EditProfilePageComponent } from './features/edit-profile/edit-profile-page/edit-profile-page.component';
 import { CommonModule } from '@angular/common';
+import { CatalogueComponent } from './features/catalogue/catalogue.component';
 
 // Define tus rutas de la aplicación
 export const APP_ROUTES: Routes = [
@@ -23,6 +24,7 @@ export const APP_ROUTES: Routes = [
   { path: 'forgot-password-form', component: ForgotPasswordFormComponent },
   { path: 'register', component: RegisterFormComponent },
   { path: 'edit-profile', component: EditProfilePageComponent },
+  { path: 'catalogue', component: CatalogueComponent },
   { path: '**', redirectTo: '' },
 ];
 

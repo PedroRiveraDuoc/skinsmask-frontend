@@ -22,9 +22,11 @@ export class RegisterFormComponent {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      username: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_]+$')]], // Se agrega el campo username
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
+      roles: [['ROLE_USER'], Validators.required] // Valor predeterminado
     }, { validators: matchPasswordsValidator() });
   }
 
@@ -49,13 +51,16 @@ export class RegisterFormComponent {
       return;
     }
 
-    const { firstName, lastName, email, password } = this.registerForm.value;
+    const { firstName, lastName, username, email, password, roles } = this.registerForm.value;
 
     this.userService
       .register({
-        username: `${firstName} ${lastName}`,
+        firstName,
+        lastName,
+        username,
         email,
         password,
+        roles
       })
       .subscribe({
         next: () => {

@@ -5,6 +5,15 @@ import { catchError, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  roles: string[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -12,37 +21,37 @@ export class UserService {
   private apiUrl = `${environment.apiUrl}/api/auth`;
   private userApiUrl = `${environment.apiUrl}/api/users`; // Endpoint específico para acciones de usuario
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   /**
    * Registra un nuevo usuario.
-   * @param user Objeto con la información del usuario (username, password, email).
-   * @returns Observable con la respuesta del backend.
    */
-  register(user: { username: string; password: string; email: string }): Observable<any> {
+  register(user: UserProfile): Observable<any> {
     return this.http.post(`${this.apiUrl}/signup`, user).pipe(
-      catchError(this.handleError)
+      catchError((error) => {
+        console.error('Error en el registro:', error);
+        return this.handleError(error);
+      })
     );
   }
 
   /**
    * Obtiene la información del usuario autenticado.
-   * @param token Token JWT del usuario autenticado.
-   * @returns Observable con los datos del usuario.
    */
   getAuthenticatedUser(token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(`${this.userApiUrl}/me`, { headers }).pipe(
-      catchError(this.handleError)
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    return this.http.get('/api/users/me', { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error al obtener el perfil del usuario:', error);
+        return throwError(() => new Error(error.message || 'Error desconocido.'));
+      })
     );
   }
 
   /**
    * Actualiza el perfil del usuario autenticado.
-   * @param profile Objeto con los datos actualizados del usuario (firstName, lastName, email).
-   * @returns Observable con la respuesta del backend.
    */
-  updateUserProfile(profile: { firstName: string; lastName: string; email: string }): Observable<any> {
+  updateUserProfile(profile: Partial<UserProfile>): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('Token no encontrado. Usuario no autorizado.');
@@ -50,14 +59,10 @@ export class UserService {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    console.log('Actualizando perfil con los datos:', profile); // Log para depuración
-
     return this.http.put(`${this.userApiUrl}/update`, profile, { headers }).pipe(
       tap((response) => {
-        console.log('Respuesta del servidor al actualizar perfil:', response);
-        // Actualiza el estado del correo en AuthService
-        this.authService.setUpdatedEmail(profile.email);
+        console.log('Perfil actualizado exitosamente:', response);
+        if (profile.email) this.authService.setUpdatedEmail(profile.email);
       }),
       catchError((error) => {
         console.error('Error al actualizar el perfil:', error);
@@ -66,22 +71,19 @@ export class UserService {
     );
   }
 
-
   /**
    * Maneja errores de HTTP.
-   * @param error Respuesta del error HTTP.
-   * @returns Observable con el error.
    */
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Ocurrió un error inesperado.';
     if (error.status === 400) {
-      errorMessage = 'Solicitud inválida. Por favor, verifica los datos enviados.';
+      errorMessage = 'Solicitud inválida. Verifica los datos enviados.';
     } else if (error.status === 401) {
-      errorMessage = 'No autorizado. Por favor, inicia sesión nuevamente.';
+      errorMessage = 'No autorizado. Inicia sesión nuevamente.';
     } else if (error.status === 404) {
-      errorMessage = 'Recurso no encontrado. Por favor, verifica la URL.';
+      errorMessage = 'Recurso no encontrado.';
     } else if (error.status === 500) {
-      errorMessage = 'Error interno del servidor. Intenta nuevamente más tarde.';
+      errorMessage = 'Error interno del servidor.';
     }
     return throwError(() => new Error(errorMessage));
   }

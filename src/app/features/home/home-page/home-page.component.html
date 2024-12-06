@@ -1,41 +1,41 @@
-<main class="flex-shrink-0" style="background-color: rgb(26, 26, 26);">
+<main class="flex-shrink-0" style="background-color: #1a1a1a;">
   <!-- Carrusel de imágenes -->
-  <div id="carouselExampleFade" class="carousel slide carousel-fade custom-size-carousel">
+  <div id="carouselExampleFade" class="carousel slide carousel-fade custom-size-carousel" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="assets/carousel/carousel1.jpg" class="d-block w-100" alt="Carrusel de naturaleza">
+        <img src="assets/carousel/carousel7.jpg" class="d-block w-100" alt="Carrusel de naturaleza" loading="lazy">
       </div>
       <div class="carousel-item">
-        <img src="assets/carousel/carousel2.jpg" class="d-block w-100" alt="Paisaje montañoso al atardecer">
+        <img src="assets/carousel/carousel2.jpg" class="d-block w-100" alt="Paisaje montañoso al atardecer" loading="lazy">
       </div>
       <div class="carousel-item">
-        <img src="assets/carousel/carousel3.jpg" class="d-block w-100" alt="Vista aérea de un bosque">
+        <img src="assets/carousel/carousel3.jpg" class="d-block w-100" alt="Vista aérea de un bosque" loading="lazy">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
+      <span class="visually-hidden">Anterior</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
+      <span class="visually-hidden">Siguiente</span>
     </button>
   </div>
 
+
   <!-- Sección de bienvenida -->
-  <div class="container welcome-section">
-    <div class="row">
-      <div class="col-md-6 order-md-2 order-1">
+  <div class="container welcome-section py-5">
+    <div class="row align-items-center">
+      <div class="col-md-6 col-12 order-md-2 order-1">
         <div class="video-container">
-          <video controls>
+          <video controls class="w-100 rounded shadow">
             <source src="assets/bluehannya.mp4" type="video/mp4">
             Tu navegador no soporta la etiqueta de video.
           </video>
         </div>
-        <br><br>
       </div>
-      <div class="col-md-6 order-md-1 order-2">
-        <img src="assets/bienvenida.png" class="img-fluid mb-5" alt="Bienvenida">
+      <div class="col-md-6 col-12 order-md-1 order-2 text-center text-md-start">
+        <img src="assets/bienvenida.png" class="img-fluid mb-4 rounded" alt="Bienvenida" loading="lazy">
       </div>
     </div>
   </div>

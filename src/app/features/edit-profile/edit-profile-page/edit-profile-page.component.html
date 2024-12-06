@@ -50,6 +50,25 @@
               </div>
             </div>
 
+            <!-- Nombre de Usuario -->
+            <div class="form-group mb-3">
+              <label for="username">Nombre de Usuario</label>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+                class="form-control"
+                required
+              />
+              <div
+                *ngIf="editProfileForm.get('username')?.invalid && editProfileForm.get('username')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="editProfileForm.get('username')?.errors?.['required']">El nombre de usuario no puede estar vacío.</small>
+                <small *ngIf="editProfileForm.get('username')?.errors?.['minlength']">Debe tener al menos 3 caracteres.</small>
+              </div>
+            </div>
+
             <!-- Correo Electrónico -->
             <div class="form-group mb-3">
               <label for="email">Correo Electrónico</label>

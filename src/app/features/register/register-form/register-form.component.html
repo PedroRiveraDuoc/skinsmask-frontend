@@ -18,6 +18,14 @@
     </div>
 
     <div class="mb-3">
+      <label for="username" class="form-label">Nombre de Usuario</label>
+      <input type="text" id="username" formControlName="username" class="form-control" required>
+      <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="text-danger">
+        El nombre de usuario es obligatorio y solo puede contener letras, números o guiones bajos.
+      </div>
+    </div>
+
+    <div class="mb-3">
       <label for="email" class="form-label">Correo electrónico</label>
       <input type="email" id="email" formControlName="email" class="form-control" required>
       <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-danger">
@@ -46,6 +54,14 @@
     <!-- Validación de contraseñas no coincidentes -->
     <div *ngIf="registerForm.errors?.['passwordsNotMatching'] && registerForm.touched">
       <small class="text-danger">Passwords do not match</small>
+    </div>
+
+    <div class="mb-3">
+      <label for="roles" class="form-label">Rol</label>
+      <select id="roles" formControlName="roles" class="form-select" required multiple>
+        <option value="ROLE_USER">Usuario</option>
+        <option value="ROLE_ADMIN">Administrador</option>
+      </select>
     </div>
 
     <button type="submit" class="btn btn-primary">Registrar</button>

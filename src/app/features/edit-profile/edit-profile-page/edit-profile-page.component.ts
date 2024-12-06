@@ -24,10 +24,11 @@ export class EditProfilePageComponent implements OnInit {
   ) {
     // Form initialization with validation rules
     this.editProfileForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(3)]],
-      lastName: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: [''] // Optional password field
+      firstName: ['', [Validators.minLength(3)]],
+      lastName: ['', [Validators.minLength(3)]],
+      username: ['', [Validators.minLength(3)]],
+      email: ['', [Validators.email]],
+      password: ['']
     });
   }
 
@@ -53,6 +54,7 @@ export class EditProfilePageComponent implements OnInit {
         this.editProfileForm.patchValue({
           firstName: user.firstName,
           lastName: user.lastName,
+          username: user.username,
           email: user.email,
         });
       },

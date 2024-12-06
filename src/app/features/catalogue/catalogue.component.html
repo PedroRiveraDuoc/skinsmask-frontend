@@ -1,0 +1,61 @@
+<div class="container mt-5 p-4 rounded" style="background-color: aliceblue;">
+  <br>
+  <div class="text-center">
+    <h2 class="section-title mb-4">Catálogo de Productos&nbsp; ⛩</h2>
+  </div>
+  <br><br>
+  <!-- Mostrar mensaje de error si ocurre -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Mostrar mensaje si no hay productos -->
+  <div *ngIf="products.length === 0 && !errorMessage" class="alert alert-info text-center">
+    No hay productos disponibles.
+  </div>
+
+  <!-- Mostrar productos -->
+  <div class="row">
+    <div *ngFor="let product of products" class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img
+          [src]="product.imageUrls[0] || 'assets/default-product.png'"
+          class="card-img-top"
+          [alt]="product.name"
+        />
+        <div class="card-body">
+          <h5 class="card-title"><strong>{{ product.name }}</strong></h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>Precio:</strong> {{ formatPrice(product.price) }}</p>
+          <p class="card-text"><strong>Stock:</strong> {{ product.stock }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-end">
+          <button
+            class="btn btn-primary d-flex align-items-center"
+            (click)="addProductToCart(product)"
+          >
+            Comprar&nbsp;&nbsp;
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+              <path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+              <path d="M17 17h-11v-14h-2" />
+              <path d="M6 5l14 1l-1 7h-13" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
